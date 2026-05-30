@@ -1,0 +1,37 @@
+name: Preview de Pull Request
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: read
+  pull-requests: write
+  pages: write
+  id-token: write
+
+jobs:
+  deploy-preview:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy Preview
+        uses: rosario/pull-request-preview@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  cleanup-preview:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Limpiar Preview
+        uses: rosario/pull-request-preview@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          action: cleanup
