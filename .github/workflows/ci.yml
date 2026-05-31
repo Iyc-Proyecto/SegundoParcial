@@ -42,9 +42,29 @@ jobs:
       - name: Validar archivos HTML
         run: htmlhint "**/*.html"
 
+  css-lint:
+    name: Validar CSS
+    needs: html-lint
+    if: ${{ success() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar Stylelint
+        run: npm install -g stylelint stylelint-config-standard
+
+      - name: Validar archivos CSS
+        run: stylelint "**/*.css"
+
   tests:
     name: Correr Tests
-    needs: html-lint
+    needs: css-lint
     if: ${{ success() }}
     runs-on: ubuntu-latest
     steps:
@@ -95,7 +115,7 @@ jobs:
 
   notify:
     name: Notificar a Discord
-    needs: [html-lint, tests, link-checker, deploy]
+    needs: [html-lint, css-lint, tests, link-checker, deploy]
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
@@ -105,12 +125,13 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
           args: |
-            ${{ (needs.html-lint.result == 'success' && needs.tests.result == 'success' && needs.link-checker.result == 'success' && needs.deploy.result == 'success') && '✅ Pipeline exitoso' || '❌ Pipeline fallido' }}
+            ${{ (needs.html-lint.result == 'success' && needs.css-lint.result == 'success' && needs.tests.result == 'success' && needs.link-checker.result == 'success' && needs.deploy.result == 'success') && '✅ Pipeline exitoso' || '❌ Pipeline fallido' }}
             📦 Repo: `${{ github.repository }}`
             🌿 Rama: `${{ github.ref_name }}`
             👤 Actor: `${{ github.actor }}`
             📝 Commit: `${{ github.sha }}`
             🔍 HTML Lint: ${{ needs.html-lint.result }}
+            🎨 CSS Lint: ${{ needs.css-lint.result }}
             🧪 Tests: ${{ needs.tests.result }}
             🔗 Link Checker: ${{ needs.link-checker.result }}
             🚀 Deploy: ${{ needs.deploy.result }}
