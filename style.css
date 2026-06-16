@@ -56,8 +56,37 @@ ul li a:hover {
     text-decoration: underline;
 }
 
-img {
-    width: 100%;
-    margin-top: 30px;
-    border-radius: 8px;
+.calculadora {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.calculadora input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.calculadora button {
+    padding: 8px 16px;
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.calculadora button:hover {
+    background-color: #005bb5;
+}
+
+.calculadora p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #222;
+    margin: 0;
 }
