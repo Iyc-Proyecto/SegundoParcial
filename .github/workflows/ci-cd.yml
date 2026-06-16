@@ -20,8 +20,6 @@ on:
 permissions:
   contents: read
   pull-requests: write
-  pages: write
-  id-token: write
 
 jobs:
   html-lint:
@@ -90,28 +88,21 @@ jobs:
           fail: true
 
   deploy:
-    name: Deploy a GitHub Pages
+    name: Deploy a Vercel
     needs: link-checker
     if: ${{ success() && github.ref == 'refs/heads/main' }}
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy a Vercel
+        uses: amondnet/vercel-action@v25
         with:
-          path: '.'
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
 
   notify:
     name: Notificar a Discord
