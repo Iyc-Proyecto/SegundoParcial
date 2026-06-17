@@ -99,10 +99,10 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-          args: >-
-            ${{ (needs.html-lint.result == 'success' && needs.tests.result == 'success' && needs.link-checker.result == 'success' && needs.deploy.result == 'success')
-            && format('✅ Pipeline exitoso\n📦 Repo: `{0}`\n🌿 Rama: `{1}`', github.repository, github.ref_name)
-            || format('❌ Pipeline fallido\n📦 Repo: `{0}`\n🌿 Rama: `{1}`\n📝 Commit: `{2}`\n{3}\n🔎 Ver error: {4}/{0}/actions/runs/{5}',
-            github.repository, github.ref_name, github.sha,
-            needs.html-lint.result == 'failure' && '🔍 HTML Lint: failure' || needs.tests.result == 'failure' && '🧪 Tests: failure' || needs.link-checker.result == 'failure' && '🔗 Link Checker: failure' || needs.deploy.result == 'failure' && '🚀 Deploy: failure' || 'desconocido',
-            github.server_url, github.run_id) }}
+          args: |
+            ${{ (needs.html-lint.result == 'success' && needs.tests.result == 'success' && needs.link-checker.result == 'success' && needs.deploy.result == 'success') && '✅ Pipeline exitoso' || '❌ Pipeline fallido' }}
+             Repo: ${{ github.repository }}
+             Rama: ${{ github.ref_name }}
+            ${{ (needs.html-lint.result != 'success' || needs.tests.result != 'success' || needs.link-checker.result != 'success' || needs.deploy.result != 'success') && format(' Commit: {0}', github.sha) || '' }}
+            ${{ needs.html-lint.result == 'failure' && ' HTML Lint: failure' || needs.tests.result == 'failure' && ' Tests: failure' || needs.link-checker.result == 'failure' && ' Link Checker: failure' || needs.deploy.result == 'failure' && ' Deploy: failure' || '' }}
+            ${{ (needs.html-lint.result != 'success' || needs.tests.result != 'success' || needs.link-checker.result != 'success' || needs.deploy.result != 'success') && format(' Ver error: {0}/{1}/actions/runs/{2}', github.server_url, github.repository, github.run_id) || '' }}
