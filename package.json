@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Proyecto de Integración Continua",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "npx serve ."
   },
   "devDependencies": {
     "jest": "^30.4.2"
