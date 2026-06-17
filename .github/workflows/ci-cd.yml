@@ -4,17 +4,9 @@ on:
   push:
     branches:
       - "main"
-      - "feature/*"
-      - "fix/*"
-      - "bug/*"
-      - "hotfix/*"
   pull_request:
     branches:
       - "main"
-      - "feature/*"
-      - "fix/*"
-      - "bug/*"
-      - "hotfix/*"
   workflow_dispatch:
 
 permissions:
@@ -48,6 +40,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
       - name: Instalar dependencias
         run: npm install
