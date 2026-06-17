@@ -49,8 +49,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Instalar dependencias
+        run: npm install
+
       - name: Correr tests
-        run: node test.js
+        run: npm test
 
   link-checker:
     name: Chequeo de Links
@@ -96,13 +99,10 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-          args: |
-            ${{ (needs.html-lint.result == 'success' && needs.tests.result == 'success' && needs.link-checker.result == 'success' && needs.deploy.result == 'success') && '✅ Pipeline exitoso' || '❌ Pipeline fallido' }}
-            📦 Repo: `${{ github.repository }}`
-            🌿 Rama: `${{ github.ref_name }}`
-            👤 Actor: `${{ github.actor }}`
-            📝 Commit: `${{ github.sha }}`
-            🔍 HTML Lint: ${{ needs.html-lint.result }}
-            🧪 Tests: ${{ needs.tests.result }}
-            🔗 Link Checker: ${{ needs.link-checker.result }}
-            🚀 Deploy: ${{ needs.deploy.result }}
+          args: >-
+            ${{ (needs.html-lint.result == 'success' && needs.tests.result == 'success' && needs.link-checker.result == 'success' && needs.deploy.result == 'success')
+            && format('✅ Pipeline exitoso\n📦 Repo: `{0}`\n🌿 Rama: `{1}`', github.repository, github.ref_name)
+            || format('❌ Pipeline fallido\n📦 Repo: `{0}`\n🌿 Rama: `{1}`\n📝 Commit: `{2}`\n{3}\n🔎 Ver error: {4}/{0}/actions/runs/{5}',
+            github.repository, github.ref_name, github.sha,
+            needs.html-lint.result == 'failure' && '🔍 HTML Lint: failure' || needs.tests.result == 'failure' && '🧪 Tests: failure' || needs.link-checker.result == 'failure' && '🔗 Link Checker: failure' || needs.deploy.result == 'failure' && '🚀 Deploy: failure' || 'desconocido',
+            github.server_url, github.run_id) }}
