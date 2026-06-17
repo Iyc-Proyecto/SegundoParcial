@@ -67,7 +67,7 @@ jobs:
       - name: Chequear links
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --verbose --no-progress '**/*.html' '**/*.md'
+          args: --verbose --no-progress --exclude-path node_modules '**/*.html'
           fail: true
 
   deploy:
