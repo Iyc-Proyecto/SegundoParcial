@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Proyecto de Integración Continua",
   "scripts": {
-    "test": "node test.js",
-    "start": "docker build -t mi-proyecto-ci . && docker run -p 8080:80 mi-proyecto-ci"
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2"
   }
 }
