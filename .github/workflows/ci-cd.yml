@@ -9,9 +9,6 @@ on:
       - "main"
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pull-requests: write
 
 jobs:
   html-lint:
@@ -62,11 +59,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Chequear links
-        uses: lycheeverse/lychee-action@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          args: --verbose --no-progress --exclude-path node_modules '**/*.html'
-          fail: true
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Chequear links
+        run: npm run links
 
   deploy:
     name: Deploy a Vercel

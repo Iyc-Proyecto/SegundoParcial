@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "Proyecto de Integración Continua",
   "scripts": {
+    "lint": "htmlhint **/*.html",
     "test": "jest",
+    "links": "linkinator **/*.html --skip node_modules",
+    "build": "npm run lint && npm test && npm run links",
     "start": "npx serve ."
   },
   "devDependencies": {
-    "jest": "^30.4.2"
+    "htmlhint": "^1.1.4",
+    "jest": "^30.4.2",
+    "linkinator": "^7.6.1"
   }
 }
