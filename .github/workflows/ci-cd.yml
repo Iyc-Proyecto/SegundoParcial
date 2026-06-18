@@ -9,7 +9,6 @@ on:
       - "main"
   workflow_dispatch:
 
-
 jobs:
   html-lint:
     name: Validar HTML
@@ -31,8 +30,6 @@ jobs:
 
   tests:
     name: Correr Tests
-    needs: html-lint
-    if: ${{ success() }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -52,8 +49,6 @@ jobs:
 
   link-checker:
     name: Chequeo de Links
-    needs: tests
-    if: ${{ success() }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -73,7 +68,7 @@ jobs:
 
   deploy:
     name: Deploy a Vercel
-    needs: link-checker
+    needs: [html-lint, tests, link-checker]
     if: ${{ success() && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
