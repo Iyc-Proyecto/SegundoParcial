@@ -28,7 +28,7 @@ npm install
 Verificación completa (lint + tests + links):
 
 ```bash
-npm run check
+npm run verify
 ```
 
 Levantar servidor local:
