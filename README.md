@@ -25,10 +25,10 @@ Instalar dependencias:
 npm install
 ```
 
-Build completa (lint + tests + links):
+Verificación completa (lint + tests + links):
 
 ```bash
-npm run build
+npm run check
 ```
 
 Levantar servidor local:

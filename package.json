@@ -6,7 +6,7 @@
     "lint": "htmlhint **/*.html",
     "test": "jest",
     "links": "linkinator **/*.html --skip node_modules",
-    "build": "npm run lint && npm test && npm run links",
+    "check": "npm run lint && npm test && npm run links",
     "start": "npx serve ."
   },
   "devDependencies": {
