@@ -9,7 +9,7 @@ describe('calcularEdad', () => {
         expect(calcularEdad(2030)).toBeNull();
     });
 
-    test('retorna null para un año anterior a 1900', () => {
+    test('retorna null para un año anterior a 1920', () => {
         expect(calcularEdad(1800)).toBeNull();
     });
 
